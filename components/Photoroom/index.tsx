@@ -106,6 +106,7 @@ const CanvasEditor: React.FC = () => {
   const loadImages = async () => {
     // Load background image
     const bgImg = new Image();
+    bgImg.crossOrigin = "anonymous";
     bgImg.src = backgroundUrl;
     await new Promise((resolve) => {
       bgImg.onload = () => {
@@ -214,7 +215,7 @@ const CanvasEditor: React.FC = () => {
         if (blob) {
           saveAs(blob, 'canvas.png');
         }
-      });
+        },'image/png');
     }
   };
 

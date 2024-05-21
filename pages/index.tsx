@@ -14,6 +14,7 @@ const Home: React.FC = () => {
           <P light>👋 Hi there. You can try out the photoroom api for adding a floating shadow here.</P>
           <P light>✏️  Put your background in the left and your object in the right below. I didn't have time to add labels and fix the layout.</P>
           <P light>💡 This just applies the floating shadow from the photoroom api. You can find out more in their <a href="https://www.photoroom.com/api/docs/reference?_gl=1*18d75db*_ga*MTQwNDY2Njk3Ni4xNzE1ODg5Mzkx*_ga_JBZP7ETRKK*MTcxNjMyNTc5My4xNS4xLjE3MTYzMjY3NTMuMC4wLjA.">docs.</a></P>
+          <P light>❗ <em> Resize the object image by dragging its bottom corner to fix its aspect ratio. </em> ❗ 😠 This is proof of concept hastily put together.</P>
         <Photoroom />
       </Container>
     </Layout>

@@ -1,35 +1,35 @@
-import React from 'react'
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-} from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
-import { dark } from 'styles/colors'
+import type { DocumentContext, DocumentInitialProps } from "next/document";
+import Document from "next/document";
+import { ServerStyleSheet } from "styled-components";
+import {dark } from 'styles/colors'
+import { Html } from 'next/document';
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
-    const sheet = new ServerStyleSheet()
-    const page = ctx.renderPage(App => props =>
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      sheet.collectStyles(<App {...props} />)
-    )
-    const styleTags = sheet.getStyleElement()
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps, ...page, styleTags }
-  }
+  static async getInitialProps(
+    ctx: DocumentContext,
+  ): Promise<DocumentInitialProps> {
+    const sheet = new ServerStyleSheet();
+    const originalRenderPage = ctx.renderPage;
 
-  render() {
-    return (
-      <Html lang='en-gb' style={{ background: dark }}>
-        <Head>{this.props.styleTags}</Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        });
+
+      const initialProps = await Document.getInitialProps(ctx);
+      return {
+        ...initialProps,
+        styles: (
+           <Html lang='en-gb' style={{ background: dark }}>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </Html>
+        ),
+      };
+    } finally {
+      sheet.seal();
+    }
   }
 }
